@@ -1,0 +1,175 @@
+.account-page {
+  min-height: 100vh;
+  background-image: url("../../assets/hero_banner.png");
+  color: #fff;
+  padding-top: 120px;
+  padding-left: 540px;
+  
+}
+
+.account-title {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+
+.account-card {
+  max-width: 800px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #141414;
+  border: 1px solid #1f1f1f;
+  border-radius: 14px;
+  padding: 32px;
+}
+
+
+.section {
+  padding: 24px 0;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-row img,
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.avatar {
+  background: #e50914;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.profile-row p {
+  color: #b3b3b3;
+  font-size: 13px;
+}
+
+
+.section h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.timer {
+  color: #ffcc70;
+}
+
+
+.primary-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  background: #e50914;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.primary-btn:hover {
+  background: #f6121d;
+  transform: scale(1.03);
+}
+.secondary-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius:16px;
+  border: 1px solid #333;
+  background: transparent;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.secondary-btn:hover {
+  background: #1a1a1a;
+  transform: scale(1.04);
+}
+
+.signout-btn {
+  background: #2a2a2a;
+  border: none;
+  width: 90px;
+  padding: 6px 0;
+  border-radius: 18px;
+  color: #b3b3b3;
+  cursor: pointer;
+  font-size: 14px;
+
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.signout-btn:hover {
+  color: #fff;
+  background: #000;
+  transform: scale(1.06);
+}
+
+
+@media (max-width: 768px) {
+  .account-page {
+    padding: 80px 20px;
+  }
+}
+
+@media (max-width: 1500px) {
+  .account-page {
+    padding-left: 280px;
+  }
+}
+@media (max-width: 1200px) {
+  .account-page {
+    padding-left: 175px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .account-page {
+    padding-left: 80px;
+  }
+}
+@media (max-width: 600px) {
+  .account-page {
+    padding-left:20px;
+  }
+}
+

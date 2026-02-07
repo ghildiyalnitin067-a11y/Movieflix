@@ -1,0 +1,155 @@
+
+.nf-pay-page {
+  min-height: 100vh;
+  background-image: url("../../assets/hero_banner.png");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+
+.nf-pay-card {
+  width: 100%;
+  max-width: 420px;
+  background: #141414;
+  border-radius: 12px;
+  padding: 28px;
+  color: #fff;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+  animation: fadeUp 0.5s ease;
+}
+
+.nf-pay-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.nf-pay-header p {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 22px;
+}
+
+.nf-plan-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1f1f1f;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.nf-plan-box strong {
+  color: #e50914;
+  font-weight: 600;
+}
+
+
+.nf-methods {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.nf-methods button {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.nf-methods button:hover {
+  background: #1c1c1c;
+}
+
+.nf-methods button.active {
+  border-color: #e50914;
+  background: #1c1c1c;
+}
+
+
+.nf-inputs input,
+.nf-inputs select {
+  width: 100%;
+  padding: 12px 14px;
+  background: #0b0b0b;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.nf-inputs input::placeholder {
+  color: #777;
+}
+
+.nf-inputs input:focus,
+.nf-inputs select:focus {
+  outline: none;
+  border-color: #e50914;
+}
+
+.nf-row {
+  display: flex;
+  gap: 10px;
+}
+
+.nf-pay-btn {
+  width: 100%;
+  margin-top: 8px;
+  background: #e50914;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.nf-pay-btn:hover {
+  background: #f6121d;
+  transform: translateY(-1px);
+}
+
+
+.nf-footer {
+  margin-top: 14px;
+  font-size: 12px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 480px) {
+  .nf-pay-card {
+    padding: 22px;
+  }
+
+  .nf-pay-header h2 {
+    font-size: 21px;
+  }
+}

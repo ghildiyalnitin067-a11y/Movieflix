@@ -1,0 +1,69 @@
+.ty-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.ty-card {
+  background: #141414;
+  border-radius: 16px;
+  padding: 40px;
+  width: 360px;
+  text-align: center;
+  color: #fff;
+  animation: popIn 0.35s ease;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ty-icon {
+  width: 56px;
+  height: 56px;
+  background: #e50914;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+}
+
+.ty-card h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.ty-card p {
+  font-size: 14px;
+  color: #b3b3b3;
+  margin-bottom: 24px;
+}
+
+.ty-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #e50914;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.ty-btn:hover {
+  transform: scale(1.05);
+}

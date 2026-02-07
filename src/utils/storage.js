@@ -1,0 +1,1 @@
+export const userKey = (uid, key) => `movieflix_${uid}_${key}`;

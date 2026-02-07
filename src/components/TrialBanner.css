@@ -1,0 +1,53 @@
+.trial-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 14px;
+  z-index: 99999;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+
+  animation: slideUp 0.4s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+
+.trial-banner.fade-out {
+  opacity: 0;
+  transform: translate(-50%, 20px);
+  pointer-events: none;
+}
+
+
+.trial-upgrade-btn {
+  background: #e50914;
+  border: none;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 85px;
+  transition: transform 0.2s ease;
+}
+
+.trial-upgrade-btn:hover {
+  transform: scale(1.05);
+}
+
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

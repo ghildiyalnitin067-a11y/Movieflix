@@ -1,0 +1,144 @@
+
+
+.features-container {
+  margin-top: 120px;
+  color: white;
+}
+
+
+.features-header {
+  margin-left: 200px;
+  max-width: 800px;
+}
+
+.features-header h1 {
+  font-size: 38px;
+  font-weight: 600;
+}
+
+.features-header p {
+  font-size: 15px;
+  color: #9a9a9a;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.features-grid {
+  margin-top: 70px;
+  margin-left: 200px;
+  margin-right: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* desktop & laptop */
+  gap: 35px;
+}
+
+
+.feature-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(39, 24, 24, 0.85) 60%,
+    rgba(63, 29, 29, 0.95) 100%
+  );
+  border-radius: 16px;
+  padding-left: 10px;
+  padding-top: 20px;
+  padding-right: 10px ;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  height: 260px;
+  text-align: center;
+}
+.feature-card p{
+    margin-top: 50px;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+
+.feature-top {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: #1b1b1b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon i {
+  color: red;
+  font-size: 22px;
+}
+
+.feature-top h3 {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+
+.feature-desc {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+
+@media (max-width: 1200px) {
+  .features-header {
+    margin-left: 120px;
+  }
+
+  .features-grid {
+    margin-left: 120px;
+    margin-right: 120px;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .features-header {
+    margin-left: 60px;
+  }
+
+  .features-grid {
+    margin-left: 60px;
+    margin-right: 60px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .features-header {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .features-header h1 {
+    font-size: 28px;
+  }
+
+  .features-grid {
+    margin-left: 20px;
+    margin-right: 20px;
+    grid-template-columns: 1fr;
+  }
+
+
+  .feature-card:hover {
+    transform: none;
+  }
+}
+

@@ -1,0 +1,11 @@
+.movies-categories {
+  margin-top: 90px;    
+  padding: 0 6%;
+  position: relative; 
+  z-index: 1;
+}
+@media (min-width: 1600px) {
+  .movies-categories {
+    padding: 0 8%;
+  }
+}

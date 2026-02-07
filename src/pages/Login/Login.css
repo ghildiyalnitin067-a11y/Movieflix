@@ -1,0 +1,54 @@
+.login-page {
+  height: 100vh;
+  background-image: url("../../assets/hero_banner.png");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 380px;
+  background: rgba(15,15,15,0.95);
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.login-card h2 {
+  color: white;
+  margin-bottom: 25px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  background: #222;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: #e50914;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.google-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.divider {
+  text-align: center;
+  color: #aaa;
+  margin: 20px 0;
+}

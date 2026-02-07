@@ -1,0 +1,212 @@
+.sub-plan{
+    margin-top: 160px;
+
+}
+.body{
+    background: #1b1b1b;
+}
+
+.plans-chart-section {
+  padding: 60px;
+  color: white;
+  text-align: center;
+
+}
+
+.plans-chart-section h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.plans-chart-section p {
+  color: #aaa;
+  margin-bottom: 30px;
+}
+
+
+.billing-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.billing-toggle button {
+  padding: 10px 25px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100px;
+  transition: 0.1s ease-in-out;
+}
+.billing-toggle button:hover{
+    transform: scale(1.15);
+    
+}
+.billing-toggle button.active {
+  background: #e50914;
+  border-color: #e50914;
+}
+
+
+.plans-table {
+  overflow-x: auto;
+  margin-top: 20px;
+  padding-bottom: 50px;
+  background: #1b1b1b;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 18px;
+  border: 1px solid #222;
+  text-align: center;
+  font-size: 15px;
+}
+
+th {
+ 
+  font-size: 18px;
+}
+
+td {
+  color: #ccc;
+}
+
+
+.plan-btn {
+  background: grey;
+  border: 1px  solid #e50914;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  transform: scale(1);
+  width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.plan-btn:hover {
+  background: #e50914;
+  transform: scale(1.1);
+
+}
+
+.plans-chart-section {
+  padding: 60px 80px;
+  background:#1b1b1b;
+  color: white;
+  text-align: center;
+}
+
+.billing-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.billing-toggle button {
+  padding: 10px 22px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.billing-toggle button.active {
+  background: #e50914;
+  border-color: #e50914;
+}
+
+
+.plans-table {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #0f0f0f;
+  border-radius: 12px;
+}
+
+th, td {
+  padding: 16px;
+  border: 1px solid #222;
+  text-align: center;
+  font-size: 15px;
+}
+
+th {
+  background: #111;
+  font-size: 17px;
+}
+
+
+
+
+@media (max-width: 1024px) {
+  .plans-chart-section {
+    padding: 40px 30px;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .plans-chart-section h1 {
+    font-size: 22px;
+  }
+
+  .plans-chart-section p {
+    font-size: 14px;
+  }
+
+  .billing-toggle {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .billing-toggle button {
+    width: 100%;
+  }
+
+  table {
+    font-size: 13px;
+  }
+}
+
+
+@media (max-width: 500px) {
+  .plans-chart-section {
+    padding: 25px 12px;
+  }
+
+  th, td {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+
+

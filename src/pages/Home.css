@@ -1,0 +1,173 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap');
+
+body {
+  font-family: Poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh; 
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+
+  mask-image: linear-gradient(to right, transparent, black 70%);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 70%);
+}
+
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.85)
+  );
+  z-index: 1;
+}
+
+
+.hero-caption {
+  position: relative;
+  z-index: 2;
+  max-width: 850px;
+  text-align: center;
+  padding: 0 6%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 84px; 
+}
+
+
+.hero-caption h1 {
+  font-size: 55px;
+  font-weight: 700;
+  width: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+
+.hero-caption p {
+  color: rgb(182, 153, 153);
+  max-width: 720px;
+  line-height: 1.7;
+  font-size: 15px;
+  transition: 0.2s ease;
+  margin-top: 94px;
+}
+
+.hero-caption p:hover {
+  color: white;
+}
+
+
+.start {
+  background: red;
+  color: white;
+  border: none;
+  height: 48px;
+  width: 210px;
+  margin-top: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: Poppins, sans-serif;
+  transition: background 0.2s ease, transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start:hover {
+  background: darkred;
+  transform: translateY(-2px);
+}
+
+
+
+@media (max-width: 1024px) {
+  .hero {
+    min-height: 105vh;
+  }
+
+  .banner-img {
+    object-position: top center; 
+  }
+
+  .hero-caption h1 {
+    font-size: 44px;
+  }
+
+  .hero-caption p {
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 115vh;
+  }
+
+  .banner-img {
+    mask-image: linear-gradient(to top, black 70%, transparent);
+    -webkit-mask-image: linear-gradient(to top, black 70%, transparent);
+    object-position: top center;
+  }
+
+  .hero-caption {
+    padding: 0 20px;
+  }
+
+  .hero-caption h1 {
+    font-size: 30px;
+  }
+
+  .hero-caption p {
+    font-size: 14px;
+  }
+
+  .start {
+    width: 100%;
+    max-width: 260px;
+  }
+}
+
+
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 125vh;
+  }
+
+  .hero-caption h1 {
+    font-size: 24px;
+  }
+
+  .hero-caption p {
+    font-size: 13px;
+  }
+}

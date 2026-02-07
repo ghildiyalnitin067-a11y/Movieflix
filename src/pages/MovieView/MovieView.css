@@ -1,0 +1,184 @@
+
+
+.mv-page {
+  color: #fff;
+  min-height: 100%;
+}
+
+
+
+.mv-hero {
+  position: relative;
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+
+.mv-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.6),
+    transparent
+  );
+}
+
+.mv-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 60px;
+  max-width: 700px;
+}
+
+.mv-title {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.mv-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 16px;
+}
+
+.mv-overview {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #ddd;
+  margin-bottom: 24px;
+}
+
+
+.mv-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.mv-play-btn {
+  background: #e50914;
+  color: #fff;
+  border: none;
+  width: 120px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mv-play-btn:hover {
+  background: #f6121d;
+  transform: scale(1.05);
+}
+
+
+
+.mv-details {
+  display: flex;
+  gap: 40px;
+  padding: 60px;
+}
+
+.mv-poster img {
+  width: 260px;
+  border-radius: 16px;
+}
+
+.mv-info {
+  max-width: 600px;
+}
+
+.mv-info p {
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.mv-extra {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+
+.mv-loading {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+}
+
+
+
+@media (max-width: 600px) {
+
+
+  .mv-hero {
+    height: 70vh;
+  }
+
+  .mv-hero-content {
+    padding: 20px;
+  }
+
+  .mv-title {
+    font-size: 28px;
+  }
+
+  .mv-meta {
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .mv-overview {
+    font-size: 14px;
+  }
+
+
+  .mv-actions {
+    flex-direction: column;
+  }
+
+  .mv-play-btn {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+
+  .mv-details {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  
+  .mv-poster {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mv-poster img {
+    width: 85%;
+    max-width: 280px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .mv-info {
+    text-align: center;
+  }
+
+  .mv-extra {
+    align-items: center;
+  }
+}
