@@ -358,8 +358,9 @@
   .poster-card {
     min-width: calc((100vw - 60px) / 2);  
     max-width: calc((100vw - 60px) / 2);
+    
   }
-
+  
   .row-header h2 {
     font-size: 20px;
   }

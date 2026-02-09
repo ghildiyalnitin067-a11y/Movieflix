@@ -22,24 +22,29 @@ const Categories = () => {
 
   const TOTAL_CARDS = 8;
 
- 
+
   const getVisibleCards = () => {
     if (window.innerWidth <= 768) return 2;
-    if (window.innerWidth <= 992) return 3;
-    if (window.innerWidth <= 1200) return 4;
+    if (window.innerWidth <= 992) return 2;
+    if (window.innerWidth <= 1200) return 3;
     return 5;
   };
 
 
+
+
   const getCardSize = () => {
-    if (window.innerWidth <= 768) return { width: 200, gap: 20 };
-    if (window.innerWidth <= 992) return { width: 240, gap: 40 };
+    if (window.innerWidth <= 768) return { width: 160, gap: 12 };
+    if (window.innerWidth <= 992) return { width: 240, gap: 20 };
     return { width: 280, gap: 60 };
   };
+
+
 
   const [visibleCards, setVisibleCards] = useState(getVisibleCards());
   const [cardSize, setCardSize] = useState(getCardSize());
   const [index, setIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const { width: CARD_WIDTH, gap: GAP } = cardSize;
   const STEP = CARD_WIDTH + GAP;
@@ -49,6 +54,7 @@ const Categories = () => {
     const handleResize = () => {
       setVisibleCards(getVisibleCards());
       setCardSize(getCardSize());
+      setIsMobile(window.innerWidth <= 768);
       setIndex(0);
       tx.current = 0;
       if (cards.current) {
@@ -68,6 +74,7 @@ const Categories = () => {
 
 
   const slideForward = () => {
+    if (isMobile) return; // Disable sliding on mobile, use horizontal scroll
     const move = getMoveCount();
     const maxIndex = TOTAL_CARDS - visibleCards;
     const newIndex = Math.min(index + move, maxIndex);
@@ -92,12 +99,12 @@ const Categories = () => {
   };
 
 
-  let startX = 0;
+  const startX = useRef(0);
   const handleTouchStart = (e) => {
-    startX = e.touches[0].clientX;
+    startX.current = e.touches[0].clientX;
   };
   const handleTouchEnd = (e) => {
-    const diff = startX - e.changedTouches[0].clientX;
+    const diff = startX.current - e.changedTouches[0].clientX;
     if (diff > 40) slideForward();
     if (diff < -40) slideBackward();
   };
@@ -118,14 +125,16 @@ const Categories = () => {
           </p>
         </div>
 
-        <div className="heading-control">
-          <button onClick={slideBackward}>
-            <i className="fa-solid fa-arrow-left"></i>
-          </button>
-          <button onClick={slideForward}>
-            <i className="fa-solid fa-arrow-right"></i>
-          </button>
-        </div>
+        {!isMobile && (
+          <div className="heading-control">
+            <button onClick={slideBackward}>
+              <i className="fa-solid fa-arrow-left"></i>
+            </button>
+            <button onClick={slideForward}>
+              <i className="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="cards-section">
@@ -159,7 +168,7 @@ const Categories = () => {
             </div>
 
          
-            <div className="card" onClick={() => goToCategory("Drama")}>
+             <div className="card" onClick={() => goToCategory("Horror")}>
               <div className="poster-collage">
                 <img src="/posters/drama1.jpg" alt="" />
                 <img src="/posters/drama2.jpg" alt="" />
@@ -168,6 +177,7 @@ const Categories = () => {
               </div>
               <div className="card-footer"><p>Drama</p></div>
             </div>
+
 
             <div className="card" onClick={() => goToCategory("Horror")}>
               <div className="poster-collage">

@@ -238,4 +238,7 @@
     flex-direction: column;
     gap: 8px;
   }
+  .start-trial{
+    width: 180px;
+  }
 }

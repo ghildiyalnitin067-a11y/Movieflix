@@ -1,25 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MoviesRow.css";
 import { addToMyList } from "@/utils/myList";
 
 
 const MoviesRow = ({
+
   title,
   fetchUrl,
   movies: externalMovies = [],
   disableFetch = false,
 }) => {
-  const [movies, setMovies] = useState([]);
+  const [fetchedMovies, setFetchedMovies] = useState([]);
   const rowRef = useRef(null);
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    if (disableFetch) {
-      setMovies(externalMovies);
-      return;
-    }
+    if (disableFetch) return;
 
     if (!fetchUrl) return;
 
@@ -27,14 +25,18 @@ const MoviesRow = ({
       try {
         const res = await fetch(fetchUrl);
         const data = await res.json();
-        setMovies(data.results || []);
+        setFetchedMovies(data.results || []);
       } catch (err) {
         console.error("TMDB fetch error:", err);
       }
     };
 
     fetchMovies();
-  }, [fetchUrl, disableFetch, externalMovies]);
+  }, [fetchUrl, disableFetch]);
+
+  const movies = useMemo(() => {
+    return disableFetch ? externalMovies : fetchedMovies;
+  }, [disableFetch, externalMovies, fetchedMovies]);
 
 
   const scrollLeft = () => {
@@ -87,15 +89,23 @@ const MoviesRow = ({
                 <span className="rating">
                   ★ {movie.vote_average?.toFixed(1)}
                 </span>
-                <button
+              <button
                 className="add-btn"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation(); 
-                  addToMyList(movie);
+                  const result = await addToMyList(movie);
+                  if (result.success) {
+                    alert(`"${movie.title}" added to your list!`);
+                  } else {
+                    alert("Failed to add: " + result.error);
+                  }
                 }}
               >
                 +
               </button>
+
+
+
               </div>
               </div>
             </div>

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./MovieView.css";
 import MovieRecommendations from "./MovieRecommendations";
 import TrailerModal from "./TrailerModel";
 import MoviesCategories from "../Movies/MoviesCategories";
+import { watchHistoryAPI } from "../../services/api";
+
 
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -11,7 +13,6 @@ const BASE_URL = "https://api.themoviedb.org/3";
 
 const MovieView = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
@@ -26,6 +27,9 @@ const MovieView = () => {
         );
         const data = await res.json();
         setMovie(data);
+
+        // Track movie view when movie is loaded
+        trackMovieView(data);
       } catch (err) {
         console.error("Movie fetch error:", err);
       }
@@ -37,6 +41,46 @@ const MovieView = () => {
   if (!movie) {
     return <div className="mv-loading">Loading...</div>;
   }
+
+
+  // Track movie view in watch history
+  const trackMovieView = async (movieData) => {
+    if (!movieData) return;
+
+    const watchData = {
+      movieId: String(movieData.id),
+      title: movieData.title,
+      posterPath: movieData.poster_path ? `https://image.tmdb.org/t/p/w200${movieData.poster_path}` : null,
+      genres: movieData.genres?.map(g => g.name) || [],
+      duration: movieData.runtime || 120, // Default 2 hours if not available
+      voteAverage: movieData.vote_average
+    };
+
+    // Save to localStorage for offline support
+    const localData = {
+      id: movieData.id,
+      title: movieData.title,
+      poster: watchData.posterPath,
+      genres: watchData.genres,
+      duration: watchData.duration,
+      watchedAt: new Date().toISOString(),
+      voteAverage: movieData.vote_average
+    };
+
+    const existingHistory = JSON.parse(localStorage.getItem("watchHistory") || "[]");
+    const filteredHistory = existingHistory.filter(item => item.id !== movieData.id);
+    const newHistory = [localData, ...filteredHistory].slice(0, 50);
+    localStorage.setItem("watchHistory", JSON.stringify(newHistory));
+    localStorage.setItem("lastActive", new Date().toISOString());
+
+    // Save to MongoDB via API
+    try {
+      await watchHistoryAPI.addToWatchHistory(watchData);
+      console.log("Tracked movie view in MongoDB:", watchData);
+    } catch (error) {
+      console.warn("Failed to save movie view to MongoDB, using localStorage only:", error);
+    }
+  };
 
 
   const playTrailer = async () => {
@@ -66,10 +110,15 @@ const MovieView = () => {
 
       setTrailerKey(trailer.key);
       setShowTrailer(true);
+      
+      // Track movie view in watch history when trailer is played
+      trackMovieView(movie);
     } catch (err) {
       console.error("Trailer fetch error:", err);
     }
   };
+
+
 
   return (
     <>
@@ -145,8 +194,10 @@ const MovieView = () => {
       <MovieRecommendations
         movieId={movie.id}
         movieTitle={movie.title}
+        genres={movie.genres}
         userId="demo-user-123"
       />
+
 
       <MoviesCategories/>
 

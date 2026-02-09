@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import {
-  BrowserRouter,
   Routes,
   Route,
   useLocation,
@@ -26,8 +25,15 @@ import Login from "./pages/Login/Login";
 import Account from "./pages/Account/Account";
 import MyList from "./pages/MyList/MyList";
 import SearchResults from "./pages/Search/SearchResult";
+import AdminPanel from "./pages/Admin/AdminPanel";
 
 import { TrialProvider } from "./context/TrialContext";
+import { AuthProvider } from "./context/AuthContext";
+import { ProfileProvider } from "./context/ProfileContext";
+
+import ProfileSelector from "./components/ProfileSelector/ProfileSelector";
+import ProfileManager from "./components/ProfileManager/ProfileManager";
+
 
 
 const Layout = ({ children }) => {
@@ -43,6 +49,7 @@ const Layout = ({ children }) => {
     "/payment",
     "/account",
     "/my-list",
+    "/admin",
   ];
 
   const hideFooter = hideFooterRoutes.includes(location.pathname);
@@ -77,9 +84,19 @@ const AnimatedRoutes = () => {
         <Route path="/account" element={<Account />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-list" element={<MyList />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        
+        {/* Profile Routes */}
+        <Route path="/profiles" element={<ProfileSelector />} />
+        <Route path="/create-profile" element={<ProfileManager mode="create" />} />
+        <Route path="/manage-profile/:profileId" element={<ProfileManager mode="edit" />} />
+        
+        {/* Main App Route (after profile selection) */}
+        <Route path="/browse" element={<Home />} />
 
       
         <Route
+
           path="/movie/:id"
           element={
             <SubscriptionGuard>
@@ -95,16 +112,19 @@ const AnimatedRoutes = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <TrialProvider>
-        <ScrollToTop />
+    <AuthProvider>
+      <ProfileProvider>
+        <TrialProvider>
+          <ScrollToTop />
 
-        <Layout>
-          <AnimatedRoutes />
-        </Layout>
-      </TrialProvider>
-    </BrowserRouter>
+          <Layout>
+            <AnimatedRoutes />
+          </Layout>
+        </TrialProvider>
+      </ProfileProvider>
+    </AuthProvider>
   );
 };
+
 
 export default App;

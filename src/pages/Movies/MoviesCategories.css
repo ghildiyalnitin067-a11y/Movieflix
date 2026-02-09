@@ -9,3 +9,8 @@
     padding: 0 8%;
   }
 }
+@media(max-width:900px){
+  .movies-categories{
+    padding: 0;
+  }
+}

@@ -33,8 +33,25 @@ const CategoryMovies = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [transition, setTransition] = useState(false);
+  const [myListStatus, setMyListStatus] = useState({});
 
   const genreName = GENRE_LABELS[genreId] || "Movies";
+
+  // Check my list status for all movies
+  useEffect(() => {
+    const checkMyListStatus = async () => {
+      const status = {};
+      for (const movie of movies) {
+        status[movie.id] = await isInMyList(movie.id);
+      }
+      setMyListStatus(status);
+    };
+    
+    if (movies.length > 0) {
+      checkMyListStatus();
+    }
+  }, [movies]);
+
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -130,22 +147,36 @@ const CategoryMovies = () => {
                   alt={movie.title}
                 />
 
-                <div className="cm-overlay">
-                  <div className="cm-overlay-top">
-                    <button
-                      className={`cm-add-btn ${
-                        isInMyList(movie.id) ? "cm-added" : ""
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        isInMyList(movie.id)
-                          ? removeFromMyList(movie.id)
-                          : addToMyList(movie);
-                      }}
-                    >
-                      {isInMyList(movie.id) ? "✓" : "＋"}
-                    </button>
-                  </div>
+                    <div className="cm-overlay">
+                      <div className="cm-overlay-top">
+                        <button
+                          className={`cm-add-btn ${
+                            myListStatus[movie.id] ? "cm-added" : ""
+                          }`}
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            if (myListStatus[movie.id]) {
+                              const result = await removeFromMyList(movie.id);
+                              if (result.success) {
+                                setMyListStatus(prev => ({...prev, [movie.id]: false}));
+                              }
+                            } else {
+                              const result = await addToMyList(movie);
+                              if (result.success) {
+                                setMyListStatus(prev => ({...prev, [movie.id]: true}));
+                                alert(`"${movie.title}" added to your list!`);
+                              } else {
+                                alert("Failed to add: " + result.error);
+                              }
+                            }
+
+                          }}
+
+                        >
+                          {myListStatus[movie.id] ? "✓" : "＋"}
+                        </button>
+                      </div>
+
 
                   <h4>{movie.title}</h4>
                   <p>{movie.overview?.slice(0, 90)}...</p>

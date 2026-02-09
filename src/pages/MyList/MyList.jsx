@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyList.css";
 import { useNavigate } from "react-router-dom";
 import { getMyList, removeFromMyList } from "@/utils/myList";
@@ -7,17 +7,30 @@ import { GENRES } from "@/constants/genres";
 const MyList = () => {
   const [movies, setMovies] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Load my list from database on mount
   useEffect(() => {
-    setMovies(getMyList());
+    loadMyList();
   }, []);
 
-
-  const handleRemove = (id) => {
-    removeFromMyList(id);
-    setMovies(getMyList());
+  const loadMyList = async () => {
+    setLoading(true);
+    const list = await getMyList();
+    setMovies(list);
+    setLoading(false);
   };
+
+  const handleRemove = async (id) => {
+    const result = await removeFromMyList(id);
+    if (result.success) {
+      await loadMyList(); // Refresh from database
+    } else {
+      alert("Failed to remove: " + result.error);
+    }
+  };
+
 
 
   const filteredMovies =
@@ -45,9 +58,12 @@ const MyList = () => {
         </select>
       </div>
 
-      {filteredMovies.length === 0 ? (
-        <p className="ml-empty">No movies found</p>
+      {loading ? (
+        <p className="ml-empty">Loading your list...</p>
+      ) : filteredMovies.length === 0 ? (
+        <p className="ml-empty">No movies in your list. Start adding movies!</p>
       ) : (
+
         <div className="ml-grid">
           {filteredMovies.map((movie, index) => (
             <div

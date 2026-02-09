@@ -5,7 +5,9 @@ import Button from "react-bootstrap/Button";
 import Categories from "../components/Categories/Categories";
 import Features from "../components/Features/Features";
 import Plans from "../components/Plans/Plans";
-import { motion } from "framer-motion";
+import Testimonials from "../components/Testimonials/Testimonials";
+
+
 
 import { auth } from "../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -56,13 +58,7 @@ const Home = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="home">
+    <div className="home">
         {/* HERO */}
         <div className="hero">
           <img src={hero_banner} className="banner-img" alt="MovieFlix Banner" />
@@ -96,8 +92,9 @@ const Home = () => {
         <Categories />
         <Features />
         <Plans />
+        <Testimonials />
       </div>
-    </motion.div>
+
   );
 };
 

@@ -1,20 +1,15 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+
+const TRIAL_DURATION = 7 * 24 * 60 * 60 * 1000;
+const STORAGE_KEY = "movieflix_trial_start";
 
 const TrialContext = createContext(null);
 
-export const TRIAL_DURATION = 7 * 24 * 60 * 60 * 1000; 
-const STORAGE_KEY = "movieflix_trial_start";
-
 export const TrialProvider = ({ children }) => {
-  const [trialStartTime, setTrialStartTime] = useState(null);
-
-
-  useEffect(() => {
+  const [trialStartTime, setTrialStartTime] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setTrialStartTime(Number(saved));
-    }
-  }, []);
+    return saved ? Number(saved) : null;
+  });
 
   const startTrial = () => {
     const now = Date.now();

@@ -18,10 +18,32 @@ const hasActiveSubscription = (uid) => {
     localStorage.getItem(`movieflix_${uid}_subscription`)
   );
 
-  if (!sub || sub.status !== "active") return false;
+  if (!sub) return false;
+  
+  // Allow active, pending, or trial statuses
+  if (sub.status === "active" || sub.status === "pending" || sub.status === "trial") {
+    return true;
+  }
 
   return Date.now() < sub.endTime;
 };
+
+const hasSelectedPlan = (uid) => {
+  // Check if user has selected a plan (stored from Plans component)
+  const selectedPlan = localStorage.getItem('selectedPlan');
+  if (selectedPlan) {
+    const plan = JSON.parse(selectedPlan);
+    // If plan was selected within last 30 days, allow access
+    if (plan.selectedAt) {
+      const selectedTime = new Date(plan.selectedAt).getTime();
+      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+      return Date.now() - selectedTime < thirtyDays;
+    }
+    return true;
+  }
+  return false;
+};
+
 
 const SubscriptionGuard = ({ children }) => {
   const user = auth.currentUser;
@@ -33,9 +55,10 @@ const SubscriptionGuard = ({ children }) => {
   const uid = user.uid;
 
   const allowed =
-    hasActiveTrial(uid) || hasActiveSubscription(uid);
+    hasActiveTrial(uid) || hasActiveSubscription(uid) || hasSelectedPlan(uid);
 
   if (!allowed) {
+
     return (
       <Navigate
         to="/subscription"

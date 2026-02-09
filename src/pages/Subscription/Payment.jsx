@@ -7,6 +7,8 @@ const Payment = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  const [method, setMethod] = useState("card");
+  const [processing, setProcessing] = useState(false);
 
   if (!state) {
     navigate("/subscription");
@@ -14,10 +16,8 @@ const Payment = () => {
   }
 
   const { billing, plan, price } = state;
-  const [method, setMethod] = useState("card");
-  const [processing, setProcessing] = useState(false);
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     const user = auth.currentUser;
     if (!user) {
       navigate("/login");
@@ -26,34 +26,55 @@ const Payment = () => {
 
     setProcessing(true);
 
-    const now = Date.now();
-
-    const duration =
+    const now = new Date();
+    const durationMs =
       billing === "yearly"
         ? 365 * 24 * 60 * 60 * 1000
         : 30 * 24 * 60 * 60 * 1000;
+    
+    const endDate = new Date(now.getTime() + durationMs);
 
+    // Store in format Account.jsx expects
     const subscription = {
-      plan,
-      billing,
-      startTime: now,
-      endTime: now + duration,
+      plan: plan.toLowerCase(),
+      displayName: state.displayName || plan.charAt(0).toUpperCase() + plan.slice(1),
+      billingCycle: billing,
+      startDate: now.toISOString(),
+      endDate: endDate.toISOString(),
       status: "active",
+      price: price
     };
 
-    localStorage.setItem(
-      `movieflix_${user.uid}_subscription`,
-      JSON.stringify(subscription)
-    );
-
-
+    // Save to localStorage (primary storage for frontend)
+    localStorage.setItem("selectedPlan", JSON.stringify(subscription));
+    localStorage.setItem(`movieflix_${user.uid}_subscription`, JSON.stringify(subscription));
+    
+    // Remove trial if exists
     localStorage.removeItem(`movieflix_${user.uid}_trial`);
+    localStorage.removeItem("trialActive");
+    localStorage.removeItem("trialEndDate");
+
+    // Try to sync with backend
+    try {
+      const { userAPI } = await import("../../services/api");
+      await userAPI.updateSubscription({
+        plan: plan.toLowerCase(),
+        billingCycle: billing,
+        status: 'active',
+        startDate: now.toISOString(),
+        endDate: endDate.toISOString()
+      });
+      console.log("Subscription synced with database");
+    } catch (error) {
+      console.warn("Could not sync with backend, using localStorage only:", error.message);
+    }
 
     setTimeout(() => {
       setProcessing(false);
       navigate("/account");
-    }, 1200);
+    }, 1500);
   };
+
 
   return (
     <div className="nf-pay-page">

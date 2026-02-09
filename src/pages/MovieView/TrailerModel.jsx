@@ -2,9 +2,6 @@ import React, { useEffect } from "react";
 import "./TrailerModel.css";
 
 const TrailerModal = ({ videoKey, onClose }) => {
-  if (!videoKey) return null;
-
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
 

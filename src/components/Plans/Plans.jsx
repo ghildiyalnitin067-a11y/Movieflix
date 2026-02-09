@@ -1,22 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Plans.css";
 import Button from "react-bootstrap/Button";
 import { auth } from "../../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTrial } from "../../context/TrialContext";
+import { planAPI, userAPI } from "../../services/api";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Plans = () => {
   const [billing, setBilling] = useState("monthly");
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [processingTrial, setProcessingTrial] = useState(false);
+  const [processingPlan, setProcessingPlan] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   const { startTrial, trialActive } = useTrial();
 
+  // Track auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
+
+
+  // Fetch plans from database
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await planAPI.getPlans();
+        if (response.success) {
+          setPlans(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch plans:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, []);
 
   const requireLogin = () => {
-    if (!auth.currentUser) {
+    if (!currentUser) {
+      // Store the intended action in sessionStorage
+      sessionStorage.setItem('redirectAfterLogin', '/subscription');
+      sessionStorage.setItem('selectedPlan', JSON.stringify({
+        billing: billing,
+        from: location.pathname
+      }));
       navigate("/login", {
-        state: { from: location.pathname },
+        state: { from: location.pathname, message: "Please login to select a plan" },
       });
       return false;
     }
@@ -24,39 +64,102 @@ const Plans = () => {
   };
 
 
-  const handleFreeTrial = () => {
+  const handleFreeTrial = async () => {
     if (!requireLogin()) return;
+    if (processingTrial) return;
 
-    startTrial();        
-    navigate("/");      
+    setProcessingTrial(true);
+    try {
+      console.log("Starting free trial...");
+      // Start trial in database
+      const result = await userAPI.startTrial();
+      console.log("Trial started:", result);
+      startTrial();        
+      alert("Free trial started successfully!");
+      navigate("/");      
+    } catch (error) {
+      console.error("Failed to start trial:", error);
+      // If user not found in database, still allow local trial
+      if (error.message && error.message.includes("User not found")) {
+        console.log("User not in database, starting local trial only");
+        startTrial();
+        alert("Free trial started (local mode)!");
+        navigate("/");
+      } else {
+        alert(error.message || "Failed to start trial. Please try again.");
+      }
+    } finally {
+      setProcessingTrial(false);
+    }
   };
 
 
-  const handleChoosePlan = (plan) => {
-    if (!requireLogin()) return;
 
-    navigate("/payment", {
-      state: {
-        billing: billing,
+  const handleChoosePlan = async (plan) => {
+    if (!requireLogin()) return;
+    if (processingPlan) return;
+
+    setProcessingPlan(plan.name);
+    try {
+      console.log("Selecting plan:", plan.name);
+      
+      // Store plan selection locally first
+      const planData = {
         plan: plan.name.toLowerCase(),
-        price: plan.amount,
-      },
-    });
+        displayName: plan.displayName,
+        billingCycle: billing,
+        price: billing === 'monthly' ? plan.price.monthly : plan.price.yearly,
+        status: 'pending',
+        selectedAt: new Date().toISOString()
+      };
+      
+      // Save to localStorage for immediate access
+      localStorage.setItem('selectedPlan', JSON.stringify(planData));
+      
+      // Try to update subscription in database (optional)
+      try {
+        await userAPI.updateSubscription({
+          plan: plan.name.toLowerCase(),
+          billingCycle: billing,
+          status: 'pending',
+          startDate: new Date().toISOString()
+        });
+        console.log("Subscription updated in database");
+      } catch (dbError) {
+        console.warn("Could not update database, continuing with local storage:", dbError.message);
+      }
+
+      // Navigate to payment page
+      navigate("/payment", {
+        state: {
+          billing: billing,
+          plan: plan.name.toLowerCase(),
+          displayName: plan.displayName,
+          price: billing === 'monthly' ? plan.price.monthly : plan.price.yearly,
+          features: plan.features,
+          quality: plan.quality,
+          devices: plan.devices
+        },
+      });
+    } catch (error) {
+      console.error("Failed to select plan:", error);
+      alert(error.message || "Failed to select plan. Please try again.");
+    } finally {
+      setProcessingPlan(null);
+    }
   };
 
 
-  const plans = {
-    monthly: [
-      { name: "Basic", price: "₹199", amount: 199, duration: "/month" },
-      { name: "Standard", price: "₹299", amount: 299, duration: "/month" },
-      { name: "Premium", price: "₹399", amount: 399, duration: "/month" },
-    ],
-    yearly: [
-      { name: "Basic", price: "₹1499", amount: 1499, duration: "/year" },
-      { name: "Standard", price: "₹2199", amount: 2199, duration: "/year" },
-      { name: "Premium", price: "₹2999", amount: 2999, duration: "/year" },
-    ],
-  };
+
+  if (loading) {
+    return (
+      <div className="plans">
+        <div className="plans-header">
+          <h1>Loading plans...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="plans">
@@ -69,7 +172,6 @@ const Plans = () => {
             tailored to suit your viewing preferences.
           </p>
         </div>
-
 
         <div className="planss-btn">
           <span className={billing === "monthly" ? "active" : ""}>
@@ -93,11 +195,10 @@ const Plans = () => {
         </div>
       </div>
 
-
       <div className="plan-cards">
-        {plans[billing].map((plan, index) => (
+        {plans.map((plan, index) => (
           <div className="p-cards1" key={index}>
-            <h1>{plan.name}</h1>
+            <h1>{plan.displayName}</h1>
 
             <p>
               Enjoy an extensive library of movies and shows featuring a range of
@@ -105,26 +206,41 @@ const Plans = () => {
             </p>
 
             <div className="price">
-              <h2>{plan.price}</h2>
-              <span>{plan.duration}</span>
+              <h2>₹{billing === 'monthly' ? plan.price.monthly : plan.price.yearly}</h2>
+              <span>/{billing === 'monthly' ? 'month' : 'year'}</span>
+            </div>
+
+            <div className="features-list">
+              <ul>
+                {plan.features.map((feature, idx) => (
+                  <li key={idx}>✓ {feature}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="plan-meta">
+              <span>{plan.quality} Quality ({plan.resolution})</span>
+              <span>{plan.devices} Device{plan.devices > 1 ? 's' : ''}</span>
             </div>
 
             <div className="boot">
               <Button
-                disabled={trialActive}
+                disabled={trialActive || processingTrial}
                 className="boot1 Plans-btn trial-btn"
                 onClick={handleFreeTrial}
               >
-                {trialActive ? "Trial Active" : "Start Free Trial"}
+                {processingTrial ? "Processing..." : trialActive ? "Trial Active" : "Start Free Trial"}
               </Button>
 
               <Button
+                disabled={processingPlan === plan.name}
                 className="boot2 Plans-btn"
                 onClick={() => handleChoosePlan(plan)}
               >
-                Choose Plan
+                {processingPlan === plan.name ? "Processing..." : "Choose Plan"}
               </Button>
             </div>
+
           </div>
         ))}
       </div>

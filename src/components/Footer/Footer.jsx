@@ -17,7 +17,7 @@ const Footer = () => {
                 </div>
                 <div className="start-btn">
                      <Button
-                       className='start start-trial'
+                       className='start-trial'
                        variant="danger"
                        onClick={() => navigate('/subscription')}
                      >

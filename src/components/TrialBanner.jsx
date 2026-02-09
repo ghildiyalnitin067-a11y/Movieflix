@@ -6,19 +6,12 @@ const TRIAL_DURATION = 7 * 24 * 60 * 60 * 1000;
 
 const TrialBanner = () => {
   const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = useState(null);
-
-
-  useEffect(() => {
+  const [timeLeft, setTimeLeft] = useState(() => {
     const trialStart = Number(
       localStorage.getItem("movieflix_trial_start")
     );
 
- 
-    if (!trialStart) {
-      setTimeLeft(null);
-      return;
-    }
+    if (!trialStart) return null;
 
     const subscription = JSON.parse(
       localStorage.getItem("movieflix_subscription")
@@ -26,11 +19,28 @@ const TrialBanner = () => {
 
     if (subscription?.status === "active") {
       localStorage.removeItem("movieflix_trial_start");
-      setTimeLeft(null);
-      return;
+      return null;
     }
 
+    const elapsed = Date.now() - trialStart;
+    const remaining = TRIAL_DURATION - elapsed;
+
+    if (remaining <= 0) {
+      localStorage.removeItem("movieflix_trial_start");
+      return null;
+    }
+
+    return remaining;
+  });
+
+
+  useEffect(() => {
+    if (!timeLeft) return;
+
     const updateTimer = () => {
+      const trialStart = Number(
+        localStorage.getItem("movieflix_trial_start")
+      );
       const elapsed = Date.now() - trialStart;
       const remaining = TRIAL_DURATION - elapsed;
 
@@ -43,10 +53,9 @@ const TrialBanner = () => {
       setTimeLeft(remaining);
     };
 
-    updateTimer();
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [timeLeft]);
 
   if (!timeLeft) return null;
 
