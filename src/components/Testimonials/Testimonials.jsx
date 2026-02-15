@@ -4,12 +4,13 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 
 
-const API_URL = "http://localhost:5001/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 
 const Testimonials = () => {
   const rowRef = useRef(null);
-  const { user, getAuthToken } = useAuth();
+  const { user, loading: authLoading, getAuthToken } = useAuth();
+
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -68,12 +69,19 @@ const Testimonials = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Check if auth is still loading
+    if (authLoading) {
+      setSubmitStatus("error");
+      return;
+    }
+    
     // Check if user is logged in
     if (!user) {
       setAuthError(true);
       setSubmitStatus("error");
       return;
     }
+
 
     setSubmitStatus("submitting");
     setAuthError(false);
@@ -241,11 +249,18 @@ const Testimonials = () => {
                 )}
               </div>
             )}
-            {!user && (
+            {!authLoading && !user && (
               <div className="status-message info">
                 ℹ️ Please <a href="/login">sign in</a> to submit a review.
               </div>
             )}
+            
+            {authLoading && (
+              <div className="status-message info">
+                ℹ️ Checking authentication...
+              </div>
+            )}
+
 
           </form>
         </div>

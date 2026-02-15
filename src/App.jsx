@@ -22,10 +22,13 @@ import Subscription from "./pages/Subscription/subscription";
 import Payment from "./pages/Subscription/Payment";
 import Support from "./pages/support";
 import Login from "./pages/Login/Login";
+import AuthCallback from "./pages/AuthCallback/AuthCallback";
 import Account from "./pages/Account/Account";
 import MyList from "./pages/MyList/MyList";
 import SearchResults from "./pages/Search/SearchResult";
 import AdminPanel from "./pages/Admin/AdminPanel";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+
 
 import { TrialProvider } from "./context/TrialContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -81,10 +84,19 @@ const AnimatedRoutes = () => {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/category/:genreId" element={<CategoryMovies />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/account" element={<Account />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-list" element={<MyList />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } 
+        />
+
         
         {/* Profile Routes */}
         <Route path="/profiles" element={<ProfileSelector />} />

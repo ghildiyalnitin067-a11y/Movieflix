@@ -6,12 +6,9 @@ import Categories from "../components/Categories/Categories";
 import Features from "../components/Features/Features";
 import Plans from "../components/Plans/Plans";
 import Testimonials from "../components/Testimonials/Testimonials";
-
-
-
-import { auth } from "../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -43,7 +40,8 @@ const Home = () => {
   }, [API_KEY]);
 
   const requireLogin = () => {
-    if (!auth.currentUser) {
+    const user = localStorage.getItem('user');
+    if (!user) {
       navigate("/login", {
         state: { from: location.pathname },
       });
@@ -51,6 +49,7 @@ const Home = () => {
     }
     return true;
   };
+
 
   const handleStartStreaming = () => {
     if (!requireLogin()) return;

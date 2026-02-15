@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Account.css";
-import { auth } from "../../firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { userAPI, planAPI, watchHistoryAPI } from "../../services/api";
-
 import Button from "react-bootstrap/Button";
+
+
 
 const Account = () => {
   const [user, setUser] = useState(null);
@@ -27,8 +26,12 @@ const Account = () => {
 
   // Get auth state and fetch user data
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
+    const checkAuth = async () => {
+      const userStr = localStorage.getItem('user');
+      const idToken = localStorage.getItem('idToken');
+      
+      if (userStr && idToken) {
+        const currentUser = JSON.parse(userStr);
         setUser(currentUser);
         await fetchUserData();
         await fetchActivityData();
@@ -37,19 +40,22 @@ const Account = () => {
         setLoading(false);
         navigate("/login", { state: { from: "/account", message: "Please login to view your account" } });
       }
-    });
+    };
 
-    return () => unsubscribe();
+    checkAuth();
   }, [navigate]);
+
 
   // Fetch user data from localStorage and API
   const fetchUserData = async () => {
     try {
       setLoading(true);
       
-      // Get current user
-      const currentUser = auth.currentUser;
+      // Get current user from localStorage
+      const userStr = localStorage.getItem('user');
+      const currentUser = userStr ? JSON.parse(userStr) : null;
       if (!currentUser) return;
+
 
       // Try to get subscription from localStorage first
       let localSubscription = null;
@@ -120,8 +126,9 @@ const Account = () => {
       }
 
       // Get My List count from localStorage using user-specific key
-      const userId = currentUser?.uid || 'anonymous';
+      const userId = currentUser?.uid || currentUser?.id || 'anonymous';
       const myList = JSON.parse(localStorage.getItem(`movieflix_mylist_${userId}`) || "[]");
+
       setMyListCount(myList.length);
 
 
@@ -364,8 +371,10 @@ const Account = () => {
 
   // Handle switch to a specific plan (like Choose Plan in Plans.jsx)
   const handleSwitchPlan = async (plan) => {
-    const currentUser = auth.currentUser;
+    const userStr = localStorage.getItem('user');
+    const currentUser = userStr ? JSON.parse(userStr) : null;
     if (!currentUser) {
+
       sessionStorage.setItem('redirectAfterLogin', '/payment');
       sessionStorage.setItem('selectedPlan', JSON.stringify({
         billing: billing,
@@ -431,9 +440,10 @@ const Account = () => {
       await userAPI.cancelSubscription();
       
       // Update localStorage
-      const currentUser = auth.currentUser;
+      const userStr = localStorage.getItem('user');
+      const currentUser = userStr ? JSON.parse(userStr) : null;
       if (currentUser) {
-        localStorage.removeItem(`movieflix_${currentUser.uid}_subscription`);
+        localStorage.removeItem(`movieflix_${currentUser.uid || currentUser.id}_subscription`);
         localStorage.removeItem('selectedPlan');
       }
       
@@ -445,9 +455,10 @@ const Account = () => {
       console.error("Failed to cancel subscription:", error);
       
       // Still update localStorage even if API fails
-      const currentUser = auth.currentUser;
+      const userStr = localStorage.getItem('user');
+      const currentUser = userStr ? JSON.parse(userStr) : null;
       if (currentUser) {
-        localStorage.removeItem(`movieflix_${currentUser.uid}_subscription`);
+        localStorage.removeItem(`movieflix_${currentUser.uid || currentUser.id}_subscription`);
         localStorage.removeItem('selectedPlan');
       }
       
@@ -455,6 +466,7 @@ const Account = () => {
       alert("Subscription cancelled (local)");
     }
   };
+
 
   if (loading) {
     return (

@@ -8,6 +8,7 @@ import { watchHistoryAPI } from "../../services/api";
 
 
 
+
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -17,31 +18,6 @@ const MovieView = () => {
   const [movie, setMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
-
-
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const res = await fetch(
-          `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`
-        );
-        const data = await res.json();
-        setMovie(data);
-
-        // Track movie view when movie is loaded
-        trackMovieView(data);
-      } catch (err) {
-        console.error("Movie fetch error:", err);
-      }
-    };
-
-    fetchMovie();
-  }, [id]);
-
-  if (!movie) {
-    return <div className="mv-loading">Loading...</div>;
-  }
-
 
   // Track movie view in watch history
   const trackMovieView = async (movieData) => {
@@ -82,6 +58,28 @@ const MovieView = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(
+          `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`
+        );
+        const data = await res.json();
+        setMovie(data);
+
+        // Track movie view when movie is loaded
+        trackMovieView(data);
+      } catch (err) {
+        console.error("Movie fetch error:", err);
+      }
+    };
+
+    fetchMovie();
+  }, [id]);
+
+  if (!movie) {
+    return <div className="mv-loading">Loading...</div>;
+  }
 
   const playTrailer = async () => {
     try {

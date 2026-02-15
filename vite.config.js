@@ -1,22 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": new URL('./src', import.meta.url).pathname,
+      "@": path.resolve(__dirname, './src'),
     },
+  },
+  optimizeDeps: {
+    include: ['firebase/app', 'firebase/auth'],
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'terser',
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          firebase: ['firebase'],
+          firebase: ['firebase/app', 'firebase/auth'],
           ui: ['framer-motion', 'react-bootstrap', 'bootstrap'],
         },
       },

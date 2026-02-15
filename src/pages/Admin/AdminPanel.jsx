@@ -14,19 +14,32 @@ const AdminPanel = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Redirect if not admin
+  // Redirect if not authenticated or not admin
   useEffect(() => {
-    if (!loading && !isAdmin) {
-      navigate("/");
+    if (!loading) {
+      if (!user) {
+        navigate("/login", { state: { from: "/admin" } });
+      } else if (!isAdmin) {
+        navigate("/");
+      }
     }
-  }, [isAdmin, loading, navigate]);
+  }, [user, isAdmin, loading, navigate]);
+
 
   // Fetch all users
   const fetchUsers = async () => {
+    // Don't fetch if not authenticated
+    const token = localStorage.getItem('idToken');
+    if (!token) {
+      console.log('AdminPanel: No auth token, skipping fetch');
+      return;
+    }
+    
     try {
       setLoadingUsers(true);
       setError("");
       const response = await userAPI.getAllUsers({ limit: 50 });
+
       console.log("AdminPanel - getAllUsers response:", response);
       
       // Handle different response structures
@@ -100,18 +113,22 @@ const AdminPanel = () => {
   };
 
   useEffect(() => {
-    if (isAdmin) {
+    // Only fetch if fully loaded, user exists, and is admin
+    if (!loading && user && isAdmin) {
       fetchUsers();
     }
-  }, [isAdmin]);
+  }, [user, isAdmin, loading]);
+
+
 
   if (loading) {
     return <div className="admin-loading">Loading...</div>;
   }
 
-  if (!isAdmin) {
+  if (!user || !isAdmin) {
     return null; // Will redirect
   }
+
 
   return (
     <div className="admin-panel">

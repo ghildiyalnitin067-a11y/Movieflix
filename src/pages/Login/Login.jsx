@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { signInWithGoogle } from "../../firebase";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +15,55 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
   const redirectPath = location.state?.from || "/";
+  
+  console.log('Login.jsx API Base URL:', API_BASE_URL);
+
+
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      
+      console.log("Starting Google Sign In...");
+      
+      // Use Firebase Google Sign In
+      const { idToken } = await signInWithGoogle();
+      console.log("Got ID token from Firebase:", idToken ? "Yes (length: " + idToken.length + ")" : "No");
+      
+      // Send token to backend
+      console.log("Sending token to backend...");
+      const response = await axios.post(`${API_BASE_URL}/auth/google-login`, {
+        idToken
+      });
+      
+      console.log("Backend response:", response.data);
+      
+      if (response.data.success) {
+        const { idToken, refreshToken, user, userData } = response.data.data;
+        
+        // Store tokens
+        localStorage.setItem('idToken', idToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userData', JSON.stringify(userData));
+        
+        // Navigate will happen via useEffect when user state updates
+        window.location.reload(); // Reload to trigger auth state change
+      }
+    } catch (err) {
+      console.error("Google login error:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
+      
+      const errorMessage = err.response?.data?.message || err.message || "Google login failed. Please try again.";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   useEffect(() => {
     if (user) {
@@ -41,7 +91,6 @@ const Login = () => {
     }
   }, [user, navigate, redirectPath]);
 
-
   const handleLogin = async () => {
     if (!email || !password) {
       setError("Please enter email and password");
@@ -56,24 +105,6 @@ const Login = () => {
     } catch (err) {
       console.error(err);
       setError("Invalid email or password");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const googleLogin = async () => {
-    // For now, keep the direct Firebase call for Google login
-    // You can implement this in AuthContext later if needed
-    try {
-      setLoading(true);
-      setError("");
-      const { GoogleAuthProvider, signInWithPopup } = await import("firebase/auth");
-      const { auth } = await import("../../firebase");
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      // Navigation will happen via useEffect when user state updates
-    } catch {
-      setError("Google sign-in failed");
     } finally {
       setLoading(false);
     }
@@ -114,7 +145,7 @@ const Login = () => {
 
         <button
           className="google-btn"
-          onClick={googleLogin}
+          onClick={handleGoogleLogin}
           disabled={loading}
         >
           Continue with Google

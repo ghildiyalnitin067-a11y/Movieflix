@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./Support.css";
+import "./support.css";
 import emailjs from "@emailjs/browser";
-import { auth } from "../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
+
 
 
 import poster1 from "../assets/images/poster1.jpg";
@@ -33,7 +33,8 @@ const Support = () => {
 
   
   const requireLogin = () => {
-    if (!auth.currentUser) {
+    const user = localStorage.getItem('user');
+    if (!user) {
       navigate("/login", {
         state: { from: location.pathname }
       });
@@ -41,6 +42,7 @@ const Support = () => {
     }
     return true;
   };
+
 
   const sendEmail = (e) => {
     e.preventDefault();

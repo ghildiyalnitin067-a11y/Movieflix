@@ -233,8 +233,8 @@
 
 
 .poster-card {
-  flex-shrink: 0;                 
-  min-width: calc((100vw - 200px) / 5); 
+  flex-shrink: 0;
+  min-width: calc((100vw - 200px) / 5);
   max-width: calc((100vw - 200px) / 5);
   cursor: pointer;
   transition: transform 0.3s ease;

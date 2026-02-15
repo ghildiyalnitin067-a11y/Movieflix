@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Plans.css";
 import Button from "react-bootstrap/Button";
-import { auth } from "../../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTrial } from "../../context/TrialContext";
 import { planAPI, userAPI } from "../../services/api";
-import { onAuthStateChanged } from "firebase/auth";
+
 
 const Plans = () => {
   const [billing, setBilling] = useState("monthly");
@@ -21,11 +20,20 @@ const Plans = () => {
 
   // Track auth state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribe();
+    const checkAuth = () => {
+      const userStr = localStorage.getItem('user');
+      setCurrentUser(userStr ? JSON.parse(userStr) : null);
+    };
+    
+    checkAuth();
+    
+    // Listen for storage changes
+    const handleStorageChange = () => checkAuth();
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
 
 
 
@@ -48,7 +56,9 @@ const Plans = () => {
   }, []);
 
   const requireLogin = () => {
-    if (!currentUser) {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+
       // Store the intended action in sessionStorage
       sessionStorage.setItem('redirectAfterLogin', '/subscription');
       sessionStorage.setItem('selectedPlan', JSON.stringify({

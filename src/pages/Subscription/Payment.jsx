@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
 import "./Payment.css";
+
 
 const Payment = () => {
   const { state } = useLocation();
@@ -18,11 +18,13 @@ const Payment = () => {
   const { billing, plan, price } = state;
 
   const handlePayment = async () => {
-    const user = auth.currentUser;
+    const userStr = localStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
     if (!user) {
       navigate("/login");
       return;
     }
+
 
     setProcessing(true);
 
@@ -47,7 +49,8 @@ const Payment = () => {
 
     // Save to localStorage (primary storage for frontend)
     localStorage.setItem("selectedPlan", JSON.stringify(subscription));
-    localStorage.setItem(`movieflix_${user.uid}_subscription`, JSON.stringify(subscription));
+    localStorage.setItem(`movieflix_${user?.uid || 'anonymous'}_subscription`, JSON.stringify(subscription));
+
     
     // Remove trial if exists
     localStorage.removeItem(`movieflix_${user.uid}_trial`);

@@ -1,64 +1,47 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
+import { useTrial } from "../context/TrialContext";
 
-const TRIAL_DURATION = 7 * 24 * 60 * 60 * 1000;
-
-const hasActiveTrial = (uid) => {
-  const start = Number(
-    localStorage.getItem(`movieflix_${uid}_trial`)
-  );
-  if (!start) return false;
-
-  return Date.now() - start < TRIAL_DURATION;
-};
-
-const hasActiveSubscription = (uid) => {
-  const sub = JSON.parse(
-    localStorage.getItem(`movieflix_${uid}_subscription`)
-  );
-
-  if (!sub) return false;
-  
-  // Allow active, pending, or trial statuses
-  if (sub.status === "active" || sub.status === "pending" || sub.status === "trial") {
-    return true;
-  }
-
-  return Date.now() < sub.endTime;
-};
-
-const hasSelectedPlan = (uid) => {
-  // Check if user has selected a plan (stored from Plans component)
-  const selectedPlan = localStorage.getItem('selectedPlan');
-  if (selectedPlan) {
-    const plan = JSON.parse(selectedPlan);
-    // If plan was selected within last 30 days, allow access
-    if (plan.selectedAt) {
-      const selectedTime = new Date(plan.selectedAt).getTime();
-      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-      return Date.now() - selectedTime < thirtyDays;
-    }
-    return true;
-  }
-  return false;
-};
-
+const TRIAL_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
 const SubscriptionGuard = ({ children }) => {
-  const user = auth.currentUser;
+  const { user } = useAuth();
+  const { trialStartTime } = useTrial();
 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  const uid = user.uid;
+  // Check if user has active trial
+  const hasActiveTrial = () => {
+    if (!trialStartTime) return false;
+    const now = Date.now();
+    const trialEnd = trialStartTime + TRIAL_DURATION;
+    return now < trialEnd;
+  };
 
-  const allowed =
-    hasActiveTrial(uid) || hasActiveSubscription(uid) || hasSelectedPlan(uid);
+  // Check if user has active subscription (from localStorage or backend)
+  const hasActiveSubscription = () => {
+    const subscription = localStorage.getItem('subscription');
+    if (!subscription) return false;
+    try {
+      const subData = JSON.parse(subscription);
+      return subData.status === 'active' && new Date(subData.endDate) > new Date();
+    } catch {
+      return false;
+    }
+  };
+
+  // Check if user has selected a plan
+  const hasSelectedPlan = () => {
+    const selectedPlan = localStorage.getItem('selectedPlan');
+    return !!selectedPlan;
+  };
+
+  const allowed = hasActiveTrial() || hasActiveSubscription() || hasSelectedPlan();
 
   if (!allowed) {
-
     return (
       <Navigate
         to="/subscription"

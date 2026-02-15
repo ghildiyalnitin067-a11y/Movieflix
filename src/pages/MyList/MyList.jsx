@@ -10,12 +10,19 @@ const MyList = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const loadMyList = async () => {
+    setLoading(true);
+    const list = await getMyList();
+    setMovies(list);
+    setLoading(false);
+  };
+
   // Load my list from database on mount
   useEffect(() => {
     loadMyList();
   }, []);
 
-  const loadMyList = async () => {
+  const loadMyListWrapper = async () => {
     setLoading(true);
     const list = await getMyList();
     setMovies(list);

@@ -1,10 +1,13 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { auth } from "../firebase";
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
+  
+  // Check authentication using localStorage (backend-only auth)
+  const user = localStorage.getItem('user');
+  const idToken = localStorage.getItem('idToken');
 
-  if (!auth.currentUser) {
+  if (!user || !idToken) {
     return (
       <Navigate
         to="/login"
