@@ -1,0 +1,34 @@
+
+> netflix-clone@0.0.0 build
+> npx vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 606 modules transformed.
+rendering chunks...
+[33m[plugin vite:reporter] 
+(!) C:/Users/lenovo/Music/Movieflix/frontend/src/services/api.js is dynamically imported by C:/Users/lenovo/Music/Movieflix/frontend/src/pages/Subscription/Payment.jsx but also statically imported by C:/Users/lenovo/Music/Movieflix/frontend/src/components/Plans/Plans.jsx, C:/Users/lenovo/Music/Movieflix/frontend/src/context/ProfileContext.jsx, C:/Users/lenovo/Music/Movieflix/frontend/src/pages/Account/Account.jsx, C:/Users/lenovo/Music/Movieflix/frontend/src/pages/Admin/AdminPanel.jsx, C:/Users/lenovo/Music/Movieflix/frontend/src/pages/MovieView/MovieView.jsx, dynamic import will not move module into another chunk.
+[39m
+computing gzip size...
+[2mdist/[22m[32mindex.html                             [39m[1m[2m    0.98 kB[22m[1m[22m[2m │ gzip:   0.54 kB[22m
+[2mdist/[22m[32massets/poster12-CodP_8JU.jpg           [39m[1m[2m   56.06 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster5-IDmM-ymO.jpg            [39m[1m[2m  113.54 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster7-CAv72lUA.jpg            [39m[1m[2m  114.11 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster6-fG_RbfMU.jpg            [39m[1m[2m  149.53 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster3-CpODwQsG.jpg            [39m[1m[2m  175.10 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster2-Di54xZk-.jpg            [39m[1m[2m  175.44 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster10-BbtZxhSu.jpg           [39m[1m[2m  176.47 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster9-CXh2F6h9.jpg            [39m[1m[2m  184.99 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster4-DtSZpEFs.jpg            [39m[1m[2m  196.63 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster1-QNESG4nG.jpg            [39m[1m[2m  268.29 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster8-CA9FoBfs.jpg            [39m[1m[2m  269.27 kB[22m[1m[22m
+[2mdist/[22m[32massets/poster11-B0Ds3cue.jpg           [39m[1m[2m  300.66 kB[22m[1m[22m
+[2mdist/[22m[32massets/background_banner-Did3CoXI.jpg  [39m[1m[2m  333.35 kB[22m[1m[22m
+[2mdist/[22m[32massets/hero_banner-C6irfZDX.png        [39m[1m[2m1,882.53 kB[22m[1m[22m
+[2mdist/[22m[32massets/logo-niKr0uhj.png               [39m[1m[2m2,095.82 kB[22m[1m[22m
+[2mdist/[22m[35massets/index-CixE0q7y.css              [39m[1m[2m   78.25 kB[22m[1m[22m[2m │ gzip:  14.34 kB[22m
+[2mdist/[22m[36massets/ui-6PWfXJuj.js                  [39m[1m[2m    6.82 kB[22m[1m[22m[2m │ gzip:   3.09 kB[22m
+[2mdist/[22m[36massets/vendor-DPhk6fEA.js              [39m[1m[2m   47.66 kB[22m[1m[22m[2m │ gzip:  16.95 kB[22m
+[2mdist/[22m[36massets/firebase-CgMhnc_H.js            [39m[1m[2m  102.82 kB[22m[1m[22m[2m │ gzip:  31.43 kB[22m
+[2mdist/[22m[36massets/index-CWYc3bx1.js               [39m[1m[2m  412.14 kB[22m[1m[22m[2m │ gzip: 130.61 kB[22m
+[32m✓ built in 3.40s[39m
