@@ -1,8 +1,5 @@
-import React, { useState } from "react";
 import "./subscription.css";
 import Plans from "../../components/Plans/Plans"
-
-import { PLANS } from "../../constants/plans";
 
 
 

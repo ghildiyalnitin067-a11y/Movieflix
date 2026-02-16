@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { userAPI } from "../../services/api";
 import "./Payment.css";
+
 
 
 const Payment = () => {
@@ -59,8 +61,8 @@ const Payment = () => {
 
     // Try to sync with backend
     try {
-      const { userAPI } = await import("../../services/api");
       await userAPI.updateSubscription({
+
         plan: plan.toLowerCase(),
         billingCycle: billing,
         status: 'active',
