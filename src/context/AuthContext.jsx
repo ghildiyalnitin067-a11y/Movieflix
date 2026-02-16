@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { API_BASE_URL, getAuthToken } from "../firebase";
 
 const AuthContext = createContext(null);
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -154,9 +154,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getAuthToken = async () => {
-    return localStorage.getItem('idToken');
-  };
+
 
   const refreshTokenIfNeeded = async () => {
     const storedRefreshToken = localStorage.getItem('refreshToken');

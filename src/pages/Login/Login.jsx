@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { signInWithGoogle } from "../../firebase";
+import { signInWithGoogle, API_BASE_URL } from "../../firebase";
 import axios from "axios";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,10 +16,10 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
   const redirectPath = location.state?.from || "/";
   
   console.log('Login.jsx API Base URL:', API_BASE_URL);
+
 
 
   const handleGoogleLogin = async () => {
@@ -56,9 +57,28 @@ const Login = () => {
       console.error("Google login error:", err);
       console.error("Error response:", err.response?.data);
       console.error("Error status:", err.response?.status);
+      console.error("Error code:", err.code);
       
-      const errorMessage = err.response?.data?.message || err.message || "Google login failed. Please try again.";
+      // Handle specific Firebase errors
+      let errorMessage;
+      if (err.code === 'auth/popup-blocked') {
+        errorMessage = "Popup was blocked by your browser. Please allow popups for this site and try again.";
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        errorMessage = "Sign-in was cancelled. Please complete the Google sign-in process.";
+      } else if (err.code === 'auth/unauthorized-domain') {
+        errorMessage = "This domain is not authorized. Please add your domain to Firebase Console > Authentication > Settings > Authorized domains.";
+      } else if (err.code === 'auth/configuration-not-found') {
+        errorMessage = "Firebase Google Sign-In is not enabled. Please enable it in Firebase Console > Authentication > Sign-in method.";
+      } else if (err.code === 'auth/operation-not-supported-in-this-environment') {
+        errorMessage = "Google Sign-In requires a secure origin (HTTPS or localhost).";
+      } else if (!import.meta.env.VITE_FIREBASE_API_KEY) {
+        errorMessage = "Firebase configuration is missing. Please check your .env file.";
+      } else {
+        errorMessage = err.response?.data?.message || err.message || "Google login failed. Please try again.";
+      }
+      
       setError(errorMessage);
+
     } finally {
       setLoading(false);
     }

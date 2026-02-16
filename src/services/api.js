@@ -1,12 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+import { API_BASE_URL, getAuthToken } from '../firebase';
 
-const getAuthToken = async () => {
-  try {
-    return localStorage.getItem('idToken');
-  } catch (error) {
-    return null;
-  }
-};
 
 const fetchWithAuth = async (endpoint, options = {}) => {
   const token = await getAuthToken();
