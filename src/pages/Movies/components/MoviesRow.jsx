@@ -12,8 +12,10 @@ const MoviesRow = ({
   disableFetch = false,
 }) => {
   const [fetchedMovies, setFetchedMovies] = useState([]);
+  const [activeCard, setActiveCard] = useState(null);
   const rowRef = useRef(null);
   const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -66,6 +68,10 @@ const MoviesRow = ({
             className="poster-card"
             key={movie.id}
             onClick={() => navigate(`/movie/${movie.id}`)}
+            onMouseEnter={() => setActiveCard(movie.id)}
+            onMouseLeave={() => setActiveCard(null)}
+            onTouchStart={() => setActiveCard(movie.id)}
+            onTouchEnd={() => setActiveCard(null)}
           >
             <div className="poster-img-wrapper">
               <img
@@ -78,10 +84,10 @@ const MoviesRow = ({
               />
 
    
-              <div className="poster-overlay">
+              <div className={`poster-overlay ${activeCard === movie.id ? 'active' : ''}`}>
                 <h4>{movie.title}</h4>
 
-                <p>
+                <p className="description">
                   {movie.overview
                     ? movie.overview.slice(0, 120) + "..."
                     : "No description available"}
@@ -113,6 +119,7 @@ const MoviesRow = ({
           </div>
         ))}
       </div>
+
     </div>
   );
 };

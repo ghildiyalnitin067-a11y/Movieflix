@@ -300,6 +300,18 @@
   margin-bottom: 6px;
 }
 
+/* Description hidden by default on mobile/tablet */
+@media (max-width: 1024px) {
+  .poster-overlay p.description {
+    display: none;
+  }
+  
+  .poster-overlay.active p.description {
+    display: block;
+  }
+}
+
+
 .poster-overlay .rating {
   color: #ff3b3b;
   font-size: 14px;
@@ -378,7 +390,19 @@
   .poster-card:hover img {
     transform: none;
   }
+  
+  /* Show overlay active state on mobile */
+  .poster-overlay.active {
+    opacity: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.95),
+      rgba(0, 0, 0, 0.6),
+      transparent
+    );
+  }
 }
+
 
 
 
