@@ -56,12 +56,13 @@ const MovieRecommendations = ({ movieId, movieTitle, genres = [] }) => {
   }, [movieId, genres]);
 
   const scrollLeft = () => {
-    rowRef.current?.scrollBy({ left: -400, behavior: "smooth" });
+    rowRef.current?.scrollBy({ left: -800, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    rowRef.current?.scrollBy({ left: 400, behavior: "smooth" });
+    rowRef.current?.scrollBy({ left: 800, behavior: "smooth" });
   };
+
 
   // Don't show section if no movies found
   if (!loading && movies.length === 0) {

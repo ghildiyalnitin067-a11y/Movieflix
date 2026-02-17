@@ -25,9 +25,11 @@
   background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
-  width: 170px;
+  width: 200px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -453,7 +455,6 @@
   }
   
   .add-review-btn {
-    padding: 10px 18px;
     font-size: 13px;
   }
   
@@ -492,6 +493,9 @@
     min-width: 280px;
     max-width: 280px;
     padding: 16px;
+  }
+  .row-header h2 {
+    font-size: 14px;
   }
   
   .testimonial-avatar {
@@ -571,3 +575,4 @@
 .testimonial-card:nth-child(4) { animation-delay: 0.4s; }
 .testimonial-card:nth-child(5) { animation-delay: 0.5s; }
 .testimonial-card:nth-child(6) { animation-delay: 0.6s; }
+

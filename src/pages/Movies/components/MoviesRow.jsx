@@ -40,12 +40,13 @@ const MoviesRow = ({
 
 
   const scrollLeft = () => {
-    rowRef.current?.scrollBy({ left: -500, behavior: "smooth" });
+    rowRef.current?.scrollBy({ left: -800, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    rowRef.current?.scrollBy({ left: 500, behavior: "smooth" });
+    rowRef.current?.scrollBy({ left: 800, behavior: "smooth" });
   };
+
 
   return (
     <div className="movie-row">
