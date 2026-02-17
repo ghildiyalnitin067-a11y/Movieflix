@@ -223,6 +223,12 @@
   .hero-banner {
     width: 92%;
   }
+  .hero-arrow.left{
+    display: none;
+  }
+  .hero-arrow.right{
+    display: none;
+  }
 
   .hero-content {
     left: 40px;
@@ -250,6 +256,12 @@
   .hero-content h1 {
     font-size: 26px;
   }
+  .hero-arrow.left{
+    display: none;
+  }
+  .hero-arrow.right{
+    display: none;
+  }
 
   .hero-content p {
     font-size: 14px;
@@ -267,8 +279,32 @@
     width: 98%;
     border-radius: 12px;
   }
+  .hero-arrow.left{
+    display: none;
+  }
+  .hero-arrow.right{
+    display: none;
+  }
 
   .hero-content p {
     display: none; 
+  }
+  .hero-content h1 {
+    font-size: 12px;
+    top: 0;
+  }
+  .play-btn{
+    width: 50px;
+    font-size: 11px;
+    height: 32px;
+  }
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  .hero-dots{
+    bottom: 0;
+    padding-bottom: 10px;
   }
 }
