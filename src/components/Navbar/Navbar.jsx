@@ -207,6 +207,13 @@ const Navbar = () => {
     }
   };
 
+  // Helper to close mobile menu and navigate
+  const handleMobileNav = (path) => {
+    setMobileMenu(false);
+    navigate(path);
+  };
+
+
   // Use active profile avatar if available, otherwise fall back to user avatar
   const profileImage = activeProfile?.avatar || 
     user?.photoURL || 
@@ -493,17 +500,18 @@ const Navbar = () => {
             ✕
           </button>
 
-          <p onClick={() => navigate("/")}>Home</p>
-          <p onClick={() => navigate("/movies")}>Movies</p>
-          <p onClick={() => navigate("/support")}>Support</p>
-          <p onClick={() => navigate("/subscription")}>
+          <p onClick={() => handleMobileNav("/")}>Home</p>
+          <p onClick={() => handleMobileNav("/movies")}>Movies</p>
+          <p onClick={() => handleMobileNav("/support")}>Support</p>
+          <p onClick={() => handleMobileNav("/subscription")}>
             Subscription
           </p>
           {isAdmin && (
-            <p onClick={() => navigate("/admin")}>⚙️ Admin Panel</p>
+            <p onClick={() => handleMobileNav("/admin")}>⚙️ Admin Panel</p>
           )}
         </div>
       )}
+
     </>
   );
 };
