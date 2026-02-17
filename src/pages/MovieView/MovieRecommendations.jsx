@@ -10,8 +10,10 @@ const MovieRecommendations = ({ movieId, movieTitle, genres = [] }) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [genreName, setGenreName] = useState("");
+  const [activeCard, setActiveCard] = useState(null);
   const rowRef = useRef(null);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!movieId) return;
@@ -103,7 +105,12 @@ const MovieRecommendations = ({ movieId, movieTitle, genres = [] }) => {
                   key={movie.id}
                   className="poster-card"
                   onClick={() => navigate(`/movie/${movie.id}`)}
+                  onMouseEnter={() => setActiveCard(movie.id)}
+                  onMouseLeave={() => setActiveCard(null)}
+                  onTouchStart={() => setActiveCard(movie.id)}
+                  onTouchEnd={() => setActiveCard(null)}
                 >
+
                   <div className="poster-img-wrapper">
                     <img
                       src={
@@ -114,7 +121,8 @@ const MovieRecommendations = ({ movieId, movieTitle, genres = [] }) => {
                       alt={movie.title}
                     />
 
-                    <div className="poster-overlay">
+                    <div className={`poster-overlay ${activeCard === movie.id ? 'active' : ''}`}>
+
                       <h4>{movie.title}</h4>
                       <p>
                         {movie.overview

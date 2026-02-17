@@ -123,67 +123,149 @@
 
 
 
-@media (max-width: 600px) {
-
-
+@media (max-width: 768px) {
   .mv-hero {
-    height: 70vh;
-    
+    height: 75vh;
+    background-position: center top;
   }
 
   .mv-hero-content {
-    padding: 20px;
+    padding: 24px;
+    max-width: 100%;
   }
 
   .mv-title {
-    font-size: 28px;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 10px;
   }
 
   .mv-meta {
     flex-wrap: wrap;
-    gap: 8px;
-    font-size: 13px;
+    gap: 10px;
+    font-size: 14px;
+    margin-bottom: 12px;
   }
 
   .mv-overview {
-    font-size: 14px;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-height: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
   }
 
-
   .mv-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 12px;
   }
 
   .mv-play-btn {
-    width: 100%;
-    padding: 12px 0;
+    width: auto;
+    padding: 12px 24px;
+    font-size: 14px;
   }
-
 
   .mv-details {
     flex-direction: column;
-    padding: 24px;
+    padding: 32px 24px;
+    gap: 24px;
   }
 
-  
   .mv-poster {
     display: flex;
     justify-content: center;
-    
   }
 
   .mv-poster img {
-    width: 85%;
-    max-width: 280px;
+    width: 70%;
+    max-width: 240px;
     height: auto;
     object-fit: contain;
+    border-radius: 12px;
   }
 
   .mv-info {
-    text-align: center;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .mv-info h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .mv-info p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ccc;
   }
 
   .mv-extra {
-    align-items: center;
+    align-items: flex-start;
+    font-size: 13px;
+    gap: 10px;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mv-hero {
+    height: 65vh;
+  }
+
+  .mv-hero-content {
+    padding: 16px;
+  }
+
+  .mv-title {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .mv-meta {
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .mv-overview {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    max-height: 100px;
+    -webkit-line-clamp: 4;
+  }
+
+  .mv-play-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .mv-details {
+    padding: 24px 16px;
+    gap: 20px;
+  }
+
+  .mv-poster img {
+    width: 65%;
+    max-width: 200px;
+  }
+
+  .mv-info h2 {
+    font-size: 18px;
+  }
+
+  .mv-info p {
+    font-size: 13px;
+  }
+
+  .mv-extra {
+    font-size: 12px;
+    gap: 8px;
   }
 }

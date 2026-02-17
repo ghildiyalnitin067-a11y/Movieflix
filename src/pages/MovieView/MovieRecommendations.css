@@ -118,6 +118,12 @@
   opacity: 1;
 }
 
+/* Show overlay on active class for touch devices */
+.poster-overlay.active {
+  opacity: 1;
+}
+
+
 .poster-overlay h4 {
   font-size: 15px;
   margin-bottom: 6px;
@@ -216,8 +222,9 @@
     max-width: calc((100vw - 60px) / 2);
   }
 
+  /* Hide overlay by default on mobile - show only when touched/held */
   .poster-overlay {
-    opacity: 1;
+    opacity: 0;
     background: linear-gradient(
       to top,
       rgba(0, 0, 0, 0.85),
@@ -228,7 +235,44 @@
   .poster-card:hover img {
     transform: none;
   }
+
+  /* Show overlay only when active (touched/held) */
+  .poster-overlay.active {
+    opacity: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.95),
+      rgba(0, 0, 0, 0.6),
+      transparent
+    );
+  }
+
+  /* Hide description by default on mobile, show only when active */
+  .poster-overlay p {
+    display: none;
+  }
+
+  .poster-overlay.active p {
+    display: block;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .poster-overlay h4 {
+    font-size: 14px;
+  }
+
+  .poster-overlay .rating {
+    font-size: 12px;
+  }
+
+  .add-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
 }
+
 
 @media (max-width: 420px) {
   .poster-card,
@@ -236,7 +280,27 @@
     min-width: calc((100vw - 40px) / 2);
     max-width: calc((100vw - 40px) / 2);
   }
+
+  .poster-overlay {
+    padding: 12px;
+  }
+
+  .poster-overlay h4 {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .poster-overlay.active p {
+    font-size: 11px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .poster-ac {
+    gap: 8px;
+  }
 }
+
 
 @media (min-width: 1600px) {
   .poster-card,
